@@ -54,6 +54,30 @@ Exemplo:
     <img alt="example-config-url" src="https://github.com/Gabriel-developer-01/jframe-cadastro-usuario/blob/main/img/config-url-example.png" width=480px/>
 </h1>
 
+> script para criação do banco de dados e tabela.
+
+> caso deseje mudar o nome do banco e tabelas tem que seguir os seguintes passos:
+1. Alterar a url para o novo nome do banco de dados: jdbc:mysql://localhost:3306/[nome do banco de dados]?user=[nome do usuario do mysql]&password=[aqui a senha]
+2. Nas classes do pacote DAO do projeto terá que mudar nas querys os nomes da tabela antiga(usuario) para o novo nome da tabela.
+
+```
+create database faculdade;
+
+CREATE TABLE `usuario` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nome` varchar(50) NOT NULL,
+  `tipo_logradouro` varchar(10) DEFAULT NULL,
+  `logradouro` varchar(50) DEFAULT NULL,
+  `numero` int DEFAULT NULL,
+  `telefone_residencial` varchar(15) DEFAULT NULL,
+  `telefone_comercial` varchar(15) DEFAULT NULL,
+  `telefone_celular` varchar(15) DEFAULT NULL,
+  `cpf` varchar(30) NOT NULL,
+  `rg` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+```
+
 ## 🤝 Perfil do dev
 
 <table>
