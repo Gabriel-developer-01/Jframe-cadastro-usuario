@@ -50,7 +50,9 @@ Antes de começar, verifique se você atendeu aos seguintes requisitos:
 
 Exemplo:
 
-
+<h1 style="padding: 100px; background: #333333;">
+    <img alt="example-config-url" src="https://github.com/Gabriel-developer-01/jframe-cadastro-usuario/blob/main/img/config-url-example.png" width=480px/>
+</h1>
 
 ## 🤝 Perfil do dev
 
