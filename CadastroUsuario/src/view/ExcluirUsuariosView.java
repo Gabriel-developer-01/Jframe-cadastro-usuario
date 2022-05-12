@@ -1,13 +1,20 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -15,18 +22,14 @@ import DTO.UsuarioDTO;
 import dao.UsuarioDAO;
 import util.LimpaCampos;
 
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
-
-public class ExcluirUsuariosView extends JFrame implements MouseListener {
+public class ExcluirUsuariosView extends JFrame implements MouseListener, ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel contentPane;
 	private JTable tableExcluir;
 	private DefaultTableModel model;
+	private JButton btnVoltarMenuPrincipal;
 
 	/**
 	 * Launch the application.
@@ -53,11 +56,10 @@ public class ExcluirUsuariosView extends JFrame implements MouseListener {
 		setBounds(100, 100, 980, 562);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		contentPane.add(scrollPane, BorderLayout.CENTER);
+		scrollPane.setBounds(5, 5, 946, 474);
 		
 		tableExcluir = new JTable();
 		tableExcluir.addMouseListener(this);
@@ -77,7 +79,14 @@ public class ExcluirUsuariosView extends JFrame implements MouseListener {
 		model.addColumn("RG");
 		
 		scrollPane.setViewportView(tableExcluir);
+		
+		btnVoltarMenuPrincipal = new JButton("Voltar");
+		btnVoltarMenuPrincipal.setIcon(new ImageIcon(ExcluirUsuariosView.class.getResource("/icones/back-icon.png")));
+		btnVoltarMenuPrincipal.setBounds(346, 489, 194, 36);
+		btnVoltarMenuPrincipal.addActionListener(this);
+		contentPane.setLayout(null);
 		contentPane.add(scrollPane);
+		contentPane.add(btnVoltarMenuPrincipal);
 	}
 	
 	public void carregarDados(List<UsuarioDTO> usuario) {
@@ -109,9 +118,9 @@ public class ExcluirUsuariosView extends JFrame implements MouseListener {
 		UsuarioDAO usuarioDao = new UsuarioDAO();
 		UsuarioDTO usuario = usuarioDao.findById(cpfUsuario);
 		
-		usuarioDao.deleteUsuario(usuario);
 		int confirm = JOptionPane.showConfirmDialog(null, "Deseja confirmar a exclusão?");
 		if(confirm == JOptionPane.YES_OPTION) {
+			usuarioDao.deleteUsuario(usuario);
 			LimpaCampos.LimpaTela(getContentPane());
 			atualizarGrid();
 		}
@@ -125,6 +134,16 @@ public class ExcluirUsuariosView extends JFrame implements MouseListener {
 		((DefaultTableModel) tableExcluir.getModel()).setRowCount(0);
 		
 		carregarDados(listUsuario);
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnVoltarMenuPrincipal) {
+			handle_btnVoltarMenuPrincipal_actionPerformed(e);
+		}
+	}
+	
+	protected void handle_btnVoltarMenuPrincipal_actionPerformed(ActionEvent e) {
+		dispose();
 	}
 	
 	public void mouseEntered(MouseEvent e) {

@@ -267,10 +267,10 @@ public class UsuarioView extends JFrame implements ActionListener {
 			UsuarioDTO usuario = prepararUsuario();
 			
 			UsuarioDAO usuarioDao = new UsuarioDAO();
-			usuarioDao.insertUsuario(usuario);
 			
 			int confirm = JOptionPane.showConfirmDialog(null, "Deseja cadastrar usuario?");
 			if(confirm == JOptionPane.YES_OPTION) {
+				usuarioDao.insertUsuario(usuario);
 				JOptionPane.showMessageDialog(null, "Usuario cadastrado com sucesso!");
 				LimpaCampos.LimpaTela(getContentPane());
 			}

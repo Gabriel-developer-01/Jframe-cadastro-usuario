@@ -10,6 +10,7 @@ import java.awt.event.MouseListener;
 import java.text.ParseException;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -27,7 +28,6 @@ import javax.swing.text.MaskFormatter;
 import DTO.UsuarioDTO;
 import dao.UsuarioDAO;
 import util.LimpaCampos;
-import javax.swing.ImageIcon;
 
 public class AlterarUsuariosView extends JFrame implements MouseListener, ActionListener {
 
@@ -47,6 +47,7 @@ public class AlterarUsuariosView extends JFrame implements MouseListener, Action
 	private final String ruas[] = { "Rua", "Avenida", "Estrada" };
 	private JButton btnAlterar;
 	private JComboBox<?> cbTipoLogra;
+	private JButton btnVoltarMenuPrincipal;
 
 	/**
 	 * Launch the application.
@@ -86,7 +87,7 @@ public class AlterarUsuariosView extends JFrame implements MouseListener, Action
 		tableAlterar.addMouseListener(this);
 		tableAlterar.setFont(new Font("SansSerif", Font.BOLD, 10));
 		tableAlterar.setForeground(new Color(0, 0, 0));
-		tableAlterar.setBackground(new Color(192, 192, 192));
+		tableAlterar.setBackground(new Color(255, 255, 255));
 
 		model = new DefaultTableModel();
 		tableAlterar.setModel(model);
@@ -182,6 +183,12 @@ public class AlterarUsuariosView extends JFrame implements MouseListener, Action
 		contentPane.add(btnAlterar);
 		contentPane.add(lblLogradouro);
 		contentPane.add(textLogradouro);
+		
+		btnVoltarMenuPrincipal = new JButton("Voltar");
+		btnVoltarMenuPrincipal.setIcon(new ImageIcon(AlterarUsuariosView.class.getResource("/icones/back-icon.png")));
+		btnVoltarMenuPrincipal.addActionListener(this);
+		btnVoltarMenuPrincipal.setBounds(162, 248, 194, 21);
+		contentPane.add(btnVoltarMenuPrincipal);
 	}
 
 	public void carregarDados(List<UsuarioDTO> usuario) {
@@ -215,6 +222,10 @@ public class AlterarUsuariosView extends JFrame implements MouseListener, Action
 		UsuarioDAO usuarioDao = new UsuarioDAO();
 		UsuarioDTO usuario = usuarioDao.findById(cpfUsuario);
 		
+		carregarCampos(usuario);
+	}
+
+	private void carregarCampos(UsuarioDTO usuario) {
 		textNome.setText(usuario.getNome());
 		textLogradouro.setText(usuario.getLogradouro());
 		textNumero.setText(usuario.getNumero().toString());
@@ -223,7 +234,6 @@ public class AlterarUsuariosView extends JFrame implements MouseListener, Action
 		formattedTextTelefoneCelular.setText(usuario.getTelefone_celular());
 		formattedTextCpf.setText(usuario.getCpf());
 		formattedTextRg.setText(usuario.getRg());
-
 	}
 
 	private void formataCampos() {
@@ -245,6 +255,9 @@ public class AlterarUsuariosView extends JFrame implements MouseListener, Action
 	}
 	
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnVoltarMenuPrincipal) {
+			handle_btnVoltarMenuPrincipal_actionPerformed(e);
+		}
 		if (e.getSource() == btnAlterar) {
 			handle_btnAlterar_actionPerformed(e);
 		}
@@ -260,9 +273,9 @@ public class AlterarUsuariosView extends JFrame implements MouseListener, Action
 			UsuarioDTO usuarioSalvar = prepararUsuario();
 			usuarioSalvar.setId(usuario.getId());
 
-			usuarioDao.updateUsuario(usuarioSalvar);
 			int confirm = JOptionPane.showConfirmDialog(null, "Deseja confirmar as alterações?");
 			if(confirm == JOptionPane.YES_OPTION) {
+				usuarioDao.updateUsuario(usuarioSalvar);
 				LimpaCampos.LimpaTela(getContentPane());
 				atualizarGrid();
 			}
@@ -306,6 +319,10 @@ public class AlterarUsuariosView extends JFrame implements MouseListener, Action
 		}
 		
 		return false;
+	}
+	
+	protected void handle_btnVoltarMenuPrincipal_actionPerformed(ActionEvent e) {
+		dispose();
 	}
 
 	@Override
